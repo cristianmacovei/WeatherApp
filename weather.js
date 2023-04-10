@@ -33,7 +33,7 @@ let weather = {
     //first Function: fetchVreme - gets passed latitude and longitude parameter and fetches
     //the API and stores JSON weather info
     fetchVreme: async function(lat, long) {
-
+        
         //API URL
         const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&timezone=GMT&daily=temperature_2m_max&daily=temperature_2m_min&daily=weathercode&current_weather=true&hourly=temperature_2m&hourly=relativehumidity_2m&forecast_days=7`;
         // await and fetch
@@ -52,7 +52,7 @@ let weather = {
         var minTemp = data.daily.temperature_2m_min;
         var weatherCode = data.daily.weathercode;
         //console.log(maxTemp);
-        var seven = document.getElementById('weather-seven-days');
+        var seven = document.querySelector('weather-seven-days');
 
         //loop through the JSON
         for (let i = 0; i < daily.time.length; i++) 
@@ -63,6 +63,7 @@ let weather = {
             //create Weather Card
             const card = document.createElement('div');
             card.classList.add(`card`);
+            card.setAttribute("id", "remove");
 
             //create h2 tag for day
             const cardTitleDay = document.createElement('h2');
@@ -72,7 +73,7 @@ let weather = {
             const weatherIconSm = document.createElement('img');
             weatherIconSm.classList.add('weatherIconSm');
             const codeDescSm = wmoCodes[weatherCode[i]];
-            console.log("Code: "+codeDescSm);
+            //console.log("Code: "+codeDescSm);
 
             //p for weathercode and icon
             const weatherCodeh3 = document.createElement('p');
@@ -92,7 +93,7 @@ let weather = {
             //store the date 
             var dateAux = new Date(day);
             var weekdayName = dateAux.toString().split(' ')[0];
-            console.log(weekdayName);
+            //console.log(weekdayName);
             
             //populate the tags with information from JSON
             cardTitleDay.innerHTML = weekdayName;
@@ -110,8 +111,7 @@ let weather = {
 
             //Append the seven cards to the main container
             seven.appendChild(card);
-            console.log(weatherIconSm);
-
+            //console.log(seven); <<-- Checked to see if the DIVs are correct
         }
         
         //access weather description for code from defined wmoCode ictionary
@@ -137,10 +137,20 @@ let weather = {
         document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value + "')";
     },
  
+    // Create a function to remove all info from the 7 DIVs, to make room for the new search. 
+    removeForecastInfo: function() {
+        //Select and store all divs with "card" class.
+        const divsToRemove = document.querySelectorAll('.card');
+        divsToRemove.forEach(el => el.remove()); //<<-- remove
+    },
 
     //second function is a search function that takes the input from the 
     //search bar and passes it as the city name parameter. 
     search: function() {
+        
+        //Call removeForecastInfo() to reset the "weather-seven-days" DIV
+        this.removeForecastInfo();
+
         //Takes the input from the search bar and stores it
         var cityName = document.querySelector(".searchbar").value;
         //Call function to change cityName into latitude and longitude
