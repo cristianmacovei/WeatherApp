@@ -117,7 +117,7 @@ let weather = {
             console.log(weatherIconSm);
 
         }
-
+        
         /*store forecast
         
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

@@ -27,7 +27,7 @@ TEXT COLOR SET TO WHITESMOKE FOR CONTRAST
     background-color: rgba(0,29,61,0.8);
     color: whitesmoke;
     padding: 20px;
-    width: 100%;
+    width: 80%;
     max-width: 400px;
     border-radius: 20px;
     margin: 10px;
@@ -120,10 +120,21 @@ h1.temp {
     width: 50%;
 }
 
-@media screen and (max-width: 420px){
+@media screen and (max-width: 1100px){
+
 
     .desc {
         font-size: small;
+    }
+    .weather-seven-days {
+        width: 80%;
+        flex-direction: column;
+        position: absolute;
+        top: 700px;
+    }
+
+    div .card {
+        width: 75%;
     }
 }
 
@@ -150,18 +161,20 @@ h1.temp {
 .weather-seven-days {
     display: flex;
     padding: 20px;
-    max-width: 100%;
+    width: 80%;
     font-family: 'Montserrat';
     background-color: rgba(0,29,61,0.8);
     border-radius: 20px;
     color: whitesmoke;
+    align-items: center;
 }
 
 div .card {
     display: inline-block;
     border-radius: 20px;
-    width: 150px;
-    height: 220px;
+    /*width: 150px;
+    height: 220px;*/
+    width: 80%;
     background-color: rgba(0,29,61,0.8);
     
     margin: 10px 10px;
