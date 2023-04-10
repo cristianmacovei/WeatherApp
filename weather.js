@@ -30,20 +30,17 @@ var wmoCodes = {
 };
 
 let weather = {
-
-    //////   API Key from OpenWeatherMap NOT NEEDED ANYMORE //////
-        //"apiKey": "3bd94ef72906ad85bf362423ee27a2d7",
-
-
-    //first Function: fetchVreme - gets passed the city parameter and searches
-    //information on the api website using the CITY parameter and APIKEY
+    //first Function: fetchVreme - gets passed latitude and longitude parameter and fetches
+    //the API and stores JSON weather info
     fetchVreme: async function(lat, long) {
 
-        const apiUrl2 = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&timezone=GMT&daily=temperature_2m_max&daily=temperature_2m_min&daily=weathercode&current_weather=true&hourly=temperature_2m&hourly=relativehumidity_2m&forecast_days=7`;
-        var response = await fetch(apiUrl2);
+        //API URL
+        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&timezone=GMT&daily=temperature_2m_max&daily=temperature_2m_min&daily=weathercode&current_weather=true&hourly=temperature_2m&hourly=relativehumidity_2m&forecast_days=7`;
+        // await and fetch
+        var response = await fetch(apiUrl);
         var data = await response.json();
 
-        //console.log(data);
+        //OK -->> console.log(data);
 
         //store aux
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -55,10 +52,9 @@ let weather = {
         var minTemp = data.daily.temperature_2m_min;
         var weatherCode = data.daily.weathercode;
         //console.log(maxTemp);
-
         var seven = document.getElementById('weather-seven-days');
 
-        //daily.time.forEach(day =>
+        //loop through the JSON
         for (let i = 0; i < daily.time.length; i++) 
         {
             const day = daily.time[i]
@@ -78,7 +74,7 @@ let weather = {
             const codeDescSm = wmoCodes[weatherCode[i]];
             console.log("Code: "+codeDescSm);
 
-            //h3 for weathercode and icon
+            //p for weathercode and icon
             const weatherCodeh3 = document.createElement('p');
             weatherCodeh3.classList.add('weatherCodeh3');
 
@@ -118,70 +114,46 @@ let weather = {
 
         }
         
-        /*store forecast
-        
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-        for (let i = 1; i <= days.length; i++) {
-            const dayOne = data.daily.time[i];
-            const date = new Date(dayOne);
-
-            const dayName = days[date.getDay()];
-            //console.log(dayName);
-
-            document.getElementById(`day-${i}`).textContent = dayName;
-            console.log(document.getElementById('day-1').textContent);
-        }*/
-
+        //access weather description for code from defined wmoCode ictionary
         var codeDescription = wmoCodes[code];
         //console.log(codeDescription);
 
+        //Store temperature and wind speed for future 
         var tempe = currentWeather.temperature;
         var wspeed = currentWeather.windspeed;
-        //console.log(data.current_weather);
+        //OK -->> console.log(data.current_weather);
 
-        document.querySelector(".city").innerText = "Weather in " + searchBarInput.value;
-        document.querySelector(".temp").innerText = parseInt(data.current_weather.temperature) + "°C";
-        document.querySelector(".windspeed").innerText = "Wind: " + parseInt(wspeed) + "km/h";
-        document.querySelector(".humidity").innerText = "Humidity: " + parseInt(hourlyWeather.relativehumidity_2m[0]) + "%";
-        document.querySelector(".weather").classList.remove("loading");
-        document.querySelector(".desc").innerText = wmoCodes[code];
+        //Set current weather in main weather container
+        document.querySelector(".city").innerText = "Weather in " + searchBarInput.value; // <<-- Location in heading
+        document.querySelector(".temp").innerText = parseInt(data.current_weather.temperature) + "°C"; // <<-- Temperature
+        document.querySelector(".windspeed").innerText = "Wind: " + parseInt(wspeed) + "km/h"; // <<-- Wind Speed
+        document.querySelector(".humidity").innerText = "Humidity: " + parseInt(hourlyWeather.relativehumidity_2m[0]) + "%"; // <<-- Humidity
+        document.querySelector(".weather").classList.remove("loading"); // <<-- Remove loading from class list to show full weather card
+        document.querySelector(".desc").innerText = wmoCodes[code]; // <<-- Weather description based on weathercode
         // OK -->> console.log(codeDescription);
         document.querySelector(".weatherIcon").src = "/Icons/"+codeDescription+".svg";
 
+        // Background image from unsplash based on location -- not very great though
         document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value + "')";
-        
-        
-        /////OPENWEATHERMAP DOESNT OFFER FORECAST SO IT WILL NOT BE IMPLEMENTED //////
-
-        /*fetch(
-            "https://api.openweathermap.org/data/2.5/weather?q=" 
-            + city 
-            + "&units=metric&appid=" 
-            + this.apiKey
-            //get the json data and (console.log it for testing then) display it 
-        ).then((response) => response.json())
-        .then((data) => this.displayVreme(data))
-        .catch(error => console.error(error));*/
     },
  
 
-    //third function is a search function that takes the input from the 
+    //second function is a search function that takes the input from the 
     //search bar and passes it as the city name parameter. 
     search: function() {
         //Takes the input from the search bar and stores it
         var cityName = document.querySelector(".searchbar").value;
-        //Call function to change cityName into lat, long
+        //Call function to change cityName into latitude and longitude
+        //so that fetchVreme() gets passed the correct parameters
         this.getCoordForCity(cityName);
     },
 
-    /// asynchronous function to get coordinates from the cityName parameter that get passed in the SEARCHBOX
+    ///third function to get coordinates from the cityName parameter that get passed in the SEARCHBOX
     getCoordForCity: async function(cityName) {
 
         // store api key and url
         const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiY3Jpc3RpYW5tYWNvdmVpIiwiYSI6ImNsZzUwNzFicDAwMzYzZHByeHd2cXp4cjEifQ.TF3o7k2iti3xgiQNOcQVFA';
         const geocodeURL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${cityName}.json?access_token=${MAPBOX_ACCESS_TOKEN}`;
-
         // await fetch url and response in json
         var response = await fetch(geocodeURL);
         var data = await response.json();
@@ -191,44 +163,33 @@ let weather = {
 
         //OK -->> console.log("Coord:", coordinates);
 
-        ////    Timisoara location: lat: 45.75, long: 21.2. 
-        ////    This algorithm shows coordinates as [long, lat] and the implemented functions take (lat, long)
-        ////    So when it would pass the variables inverted
-        ////    So basically for Timisoara it would show the Weather in Saudi Arabia[21.2 , 45.75];
-
         //convert to 2 individual variables: lat & long
         var long = coordinates[0];
         var lat = coordinates[1];
 
         // call fetchVreme for stored values above
         this.fetchVreme(lat,long);
-
-        // check to see if lat and long are correct
-        // console.log(lat, long);
+        //OK -->> console.log(lat, long);
         return coordinates;
     }
 
 
 }
+
 //Adding functionality to the magnifying glass button to search
-document
-.querySelector(".search button")
-.addEventListener("click", function () {
+document.querySelector(".search button").addEventListener("click", function () {
     weather.search();
 });
 
-//Adding functionality when the enter key is pressed
-document
-.querySelector(".searchbar")
-.addEventListener("keyup", function (event) {
+//Adding functionality to the enter key 
+document.querySelector(".searchbar").addEventListener("keyup", function (event) {
     if (event.key == "Enter") {
         weather.search();
     }
 });
 
-
+//Store
 const searchBarInput = document.getElementById('searchbar');
-
 const mapsApiKey = "AIzaSyB1UoE2a_f-XSIIFnrI8zS7hZODlu_c08I";
 
 //Ask for location PERMISSION and get it if allow
@@ -240,25 +201,24 @@ navigator.geolocation.getCurrentPosition((position) => {
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-
-
-        // City name does not get passed to the SEARCHBAR // but does show up in the console
-        //UPDATE it works. Issue was all the variables were declared as CONST instead of VAR.
-
+        
+        //Store components that make up the location data
         var addressComponents = data.results[0].address_components;
         var cityComponent = addressComponents.find(component => component.types.includes('locality'));
         var city = cityComponent ? cityComponent.long_name : '';
         
-        console.log(lat, long);
-        //var address = data.results[0].address_components;
+        //OK -->> console.log(lat, long);
+        
+        //find the city if it exists, else pass latitude and longitude in the searchbar
         var location = city ? city : `${lat},${long}`;
 
-        //verify that it ACTUALLY STORES THE DAMN LOC
+
+        //verify that it ACTUALLY STORES THE DAMN LOC // it does
         var passedLoc = document.getElementById('searchbar').value = location;
         
         //w
-        console.log(passedLoc);
-        //weather.search();
+        // OK -->> console.log(passedLoc);
+        
         weather.getCoordForCity(location);
 
       })
@@ -272,7 +232,7 @@ navigator.geolocation.getCurrentPosition((position) => {
     console.log(error.message);
   });
 
-
+//Date and Time
 const datetimeCont = document.getElementById('datetime-container');
 const dateCont = document.getElementById('date');
 const timeCont = document.getElementById('time');
@@ -295,5 +255,3 @@ setInterval(() => {
     dateCont.textContent = `Today is: ${date}`;
 
 }, 1000);
-
-

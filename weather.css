@@ -122,7 +122,6 @@ h1.temp {
 
 @media screen and (max-width: 1100px){
 
-
     .desc {
         font-size: small;
     }
@@ -172,8 +171,6 @@ h1.temp {
 div .card {
     display: inline-block;
     border-radius: 20px;
-    /*width: 150px;
-    height: 220px;*/
     width: 80%;
     background-color: rgba(0,29,61,0.8);
     
