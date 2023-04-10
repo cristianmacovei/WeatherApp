@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500&display=swap');
+
+/* PLACEHOLDER COLOR */
+::placeholder {
+    color: black;
+}
+
+/* BODY STYLED TO CENTER THE WEATHER CARD */
+body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 100%;
+    background-color: #f5f5f5;
+    background-image: url('https://source.unsplash.com/random/1600x900/?rainclouds');
+    background-repeat: no-repeat;
+    flex-direction: column;
+}
+
+/*
+TEXT COLOR SET TO WHITESMOKE FOR CONTRAST
+*/
+.weather-card {
+    background-color: rgba(0,29,61,0.8);
+    color: whitesmoke;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    margin: 10px;
+    
+
+}
+
+.datetime-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+div#time {
+    padding: 5px;
+}
+
+div#date {
+    padding: 5px;
+}
+
+/* FLEXBOX FOR SEARCH TO DISPLAY INPUT FIELD AND
+ MAGNIFYING-GLASS-BUTTON IN A ROW */
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+/* BUTTON ROUNDED WITH BORDER-RADIUS AND STYLISED WITH A TRANSITION */
+button {
+    margin: 0.5em;
+    border-radius: 50%;
+    border: none;
+    background-color: #7c7c7c7c;
+    width: 3rem;
+    height: 2.4rem;
+    color: whitesmoke;
+}
+
+button:hover {
+    background-color: #7c7c7c2b;
+    transition: 0.2s ease-in-out;
+}
+
+/* SEARCHBAR STYLISED TO WORK WITH THE 
+BUTTON */
+input.searchbar {
+    padding: 3px 13px 3px;
+    font-family: inherit;
+    border: none;
+    border-radius: 25px;
+    width: 100%;
+    height: 2.4em;
+    background-color: #7c7c7c7c;
+    color: whitesmoke;
+    outline: none;
+    margin: 0.5em;
+}
+
+/* TEMP HEADING STYLING */
+h1.temp {
+    position: relative;
+    margin: 10px;
+    /* padding: 5px 0px 5px; */
+    top: 20px;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.desc {
+    text-transform: capitalize;
+    font-size: large;
+}
+
+.container {
+    display: inline-flex;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.container-sm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+@media screen and (max-width: 420px){
+
+    .desc {
+        font-size: small;
+    }
+}
+
+.weather.loading {
+    visibility: hidden;
+    max-height: 20px;
+    position: relative;
+}
+
+.weather.loading::after {
+    visibility: visible;
+    content: 'Loading...';
+    position: absolute;
+    top: 0;
+    left: 15px;
+    color: whitesmoke;
+    font-weight: 300;
+    font-size: small;
+
+}
+
+/* SMALLER WEATHER CARDS */
+
+.weather-seven-days {
+    display: flex;
+    padding: 20px;
+    max-width: 100%;
+    font-family: 'Montserrat';
+    background-color: rgba(0,29,61,0.8);
+    border-radius: 20px;
+    color: whitesmoke;
+}
+
+div .card {
+    display: inline-block;
+    border-radius: 20px;
+    width: 150px;
+    height: 220px;
+    background-color: rgba(0,29,61,0.8);
+    
+    margin: 10px 10px;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: x-large;
+}
+
+img.weatherIcon {
+    width: 50px;
+    padding: 10px;
+}
+
+.card img {
+    color: whitesmoke;
+    width: 50px;
+    height: 50px;
+}
+
+.card h2 {
+    color: whitesmoke;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.card p {
+    color: whitesmoke;
+    margin-top: 10px;
+    font-size: 14px;
+}
