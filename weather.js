@@ -40,8 +40,6 @@ let weather = {
         var response = await fetch(apiUrl);
         var data = await response.json();
 
-        //OK -->> console.log(data);
-
         //store aux
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var currentWeather = data.current_weather;
@@ -114,12 +112,10 @@ let weather = {
         
         //access weather description for code from defined wmoCode ictionary
         var codeDescription = wmoCodes[code];
-        //console.log(codeDescription);
 
         //Store temperature and wind speed for future 
         var tempe = currentWeather.temperature;
         var wspeed = currentWeather.windspeed;
-        //OK -->> console.log(data.current_weather);
 
         //Set current weather in main weather container
         document.querySelector(".city").innerText = "Weather in " + searchBarInput.value; // <<-- Location in heading
@@ -128,8 +124,7 @@ let weather = {
         document.querySelector(".humidity").innerText = "Humidity: " + parseInt(hourlyWeather.relativehumidity_2m[0]) + "%"; // <<-- Humidity
         document.querySelector(".weather").classList.remove("loading"); // <<-- Remove loading from class list to show full weather card
         document.querySelector(".desc").innerText = wmoCodes[code]; // <<-- Weather description based on weathercode
-        // OK -->> console.log(codeDescription);
-        document.querySelector(".weatherIcon").src = "/Icons/"+codeDescription+".svg";
+        document.querySelector(".weatherIcon").src = "/Icons/"+codeDescription+".svg"; // <<-- Weather icons
 
         // Background image from unsplash based on location -- not very great though
         document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value + "')";
@@ -221,19 +216,14 @@ let weather = {
         //store found data
         var coordinates = data.features[0].center;
 
-        //OK -->> console.log("Coord:", coordinates);
-
         //convert to 2 individual variables: lat & long
         var long = coordinates[0];
         var lat = coordinates[1];
 
         // call fetchVreme for stored values above
         this.fetchVreme(lat,long);
-        //OK -->> console.log(lat, long);
         return coordinates;
     }
-
-
 }
 
 //Adding functionality to the magnifying glass button to search
@@ -267,17 +257,11 @@ navigator.geolocation.getCurrentPosition((position) => {
         var cityComponent = addressComponents.find(component => component.types.includes('locality'));
         var city = cityComponent ? cityComponent.long_name : '';
         
-        //OK -->> console.log(lat, long);
-        
         //find the city if it exists, else pass latitude and longitude in the searchbar
         var location = city ? city : `${lat},${long}`;
 
-
         //verify that it ACTUALLY STORES THE DAMN LOC // it does
         var passedLoc = document.getElementById('searchbar').value = location;
-        
-        //w
-        // OK -->> console.log(passedLoc);
         
         weather.getCoordForCity(location);
 
@@ -307,9 +291,6 @@ setInterval(() => {
     //Get minutes and show a 0 if minutes less than 10 // 9:05 instead of 9:5
     const time = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
     const date = now.toLocaleDateString('en-GB', {weekday: 'short', day: '2-digit', month: 'short', year: 'numeric'});
-
-    //const tomorrow = now.getDate()+1;
-    //console.log(tomorrow);
 
     timeCont.textContent = `${time}`;
     dateCont.textContent = `Today is: ${date}`;
