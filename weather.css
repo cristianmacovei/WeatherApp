@@ -5,11 +5,27 @@
     color: black;
 }
 
+header {
+    background-color: rgba(0,29,61,0.8);
+    width: 100vw;
+    height: 7%;
+    top: 0;
+    text-align: center;
+    position: absolute;
+    height: 15%;
+}
+
+h1.header-title {
+    position: relative;
+    top: 20px;
+    color: whitesmoke;
+}
+
 /* BODY STYLED TO CENTER THE WEATHER CARD */
 body {
     display: flex;
     flex-flow: column nowrap;
-    justify-content: space-evenly;
+    justify-content: center;
     height: 200vh;
     font-family: Montserrat, sans-serif;
     font-size: 100%;
@@ -102,7 +118,7 @@ input.searchbar {
     border: none;
     border-radius: 25px;
     width: 100%;
-    height: 2.4em;
+    height: 3.4em;
     background-color: #7c7c7c7c;
     color: whitesmoke;
     outline: none;
@@ -148,7 +164,17 @@ h1.temp {
 
     .weather-card {
         position: absolute;
-        top: 100px;
+        top: 200px;
+    }
+
+    #forecast {
+        position: absolute;
+        top: 575px;
+    }
+
+    #hourly-forecast {
+        position:absolute;
+        top: 2550px;;
     }
 
     .weather-seven-days {
