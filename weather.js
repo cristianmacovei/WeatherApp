@@ -63,7 +63,6 @@ let weather = {
             //create Weather Card
             const card = document.createElement('div');
             card.classList.add(`card`);
-            card.setAttribute("id", "remove");
 
             //create h2 tag for day
             const cardTitleDay = document.createElement('h2');
@@ -111,7 +110,6 @@ let weather = {
 
             //Append the seven cards to the main container
             seven.appendChild(card);
-            //console.log(seven); <<-- Checked to see if the DIVs are correct
         }
         
         //access weather description for code from defined wmoCode ictionary
@@ -135,19 +133,71 @@ let weather = {
 
         // Background image from unsplash based on location -- not very great though
         document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value + "')";
+
+
+        //Store data for hourly forecast
+        var hourTemp = hourlyWeather.temperature_2m;
+        var hourHum = hourlyWeather.relativehumidity_2m;
+        //Add hourly forecast
+        for (let i = 0; i < 24; i++) {
+
+            //get the time from JSON file
+            const hours = hourlyWeather.time[i];
+            //Create HTML tags to show data
+            const hourCard = document.createElement('div');
+            hourCard.classList.add('hour-card');
+            hourCard.setAttribute("id", "remove");
+            
+            const hourHeading = document.createElement('h2');
+            hourHeading.classList.add('hour-heading');
+
+            const tempForHour = document.createElement('p');
+            tempForHour.classList.add('temp-for-hour');
+
+            const humidityForHour = document.createElement('p');
+            humidityForHour.classList.add('humidity-for-hour');
+
+            //change date to show only hours 0-23
+            var dateAux = new Date(hours);
+            var hourTime = dateAux.toString().split(' ')[4]; // <<-- Show time as HH:MM:SS
+            var hourOnly = hourTime.toString().split(':')[0];// <<-- Show time as HH
+            var minOnly = hourTime.toString().split(':')[1]; // <<-- Show time as MM
+
+            var hourAndMin = `${hourOnly}:${minOnly}`; // <<-- Concatenate to show time as HH:MM
+
+            //Populate tags
+            hourHeading.innerHTML = hourAndMin;
+            tempForHour.innerHTML = `${parseInt(hourTemp[i])}°C`;
+            humidityForHour.innerHTML = `${hourHum[i]}%`;
+
+            console.log(tempForHour, humidityForHour);
+
+            //append
+            hourCard.appendChild(hourHeading);
+            hourCard.appendChild(tempForHour);
+            hourCard.appendChild(humidityForHour);
+
+
+            const mainHourlyContainer = document.querySelector('.hourly-container');
+            mainHourlyContainer.appendChild(hourCard);
+        }
     },
  
     // Create a function to remove all info from the 7 DIVs, to make room for the new search. 
     removeForecastInfo: function() {
-        //Select and store all divs with "card" class.
-        const divsToRemove = document.querySelectorAll('.card');
-        divsToRemove.forEach(el => el.remove()); //<<-- remove
+        //Select and store all divs with "card" class AKA the daily weather
+        const dayDivsToRemove = document.querySelectorAll('.card');
+        dayDivsToRemove.forEach(el => el.remove()); //<<-- remove
+
+        //Select and store all divs with "hour-card" class AKA the hourly weather 
+        const hourDivsToRemove = document.querySelectorAll('.hour-card');
+        hourDivsToRemove.forEach(el => el.remove()); // <<-- remove
     },
 
     //second function is a search function that takes the input from the 
     //search bar and passes it as the city name parameter. 
     search: function() {
-        
+
         //Call removeForecastInfo() to reset the "weather-seven-days" DIV
         this.removeForecastInfo();
 
