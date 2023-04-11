@@ -126,8 +126,9 @@ let weather = {
 
         document.querySelector(".weather").classList.remove("loading"); // <<-- Remove loading from class list to show full weather card
 
+        var parameter = 'weather';
         // Background image from unsplash based on location -- not very great though
-        document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value + "')";
+        document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value+`+${parameter}` + "')";
 
         //Store data for hourly forecast
         var hourTemp    = hourlyWeather.temperature_2m;
