@@ -38,19 +38,18 @@ let weather = {
         const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&timezone=GMT&daily=temperature_2m_max&daily=temperature_2m_min&daily=weathercode&current_weather=true&hourly=temperature_2m&hourly=relativehumidity_2m&forecast_days=7`;
         // await and fetch
         var response = await fetch(apiUrl);
-        var data = await response.json();
+        var data     = await response.json();
 
         //store aux
-        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        var currentWeather = data.current_weather;
-        var hourlyWeather = data.hourly;
-        var code = data.current_weather.weathercode;
-        var daily = data.daily;
-        var maxTemp = data.daily.temperature_2m_max;
-        var minTemp = data.daily.temperature_2m_min;
-        var weatherCode = data.daily.weathercode;
-        //console.log(maxTemp);
-        var seven = document.querySelector('weather-seven-days');
+        var days            = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var currentWeather  = data.current_weather;
+        var hourlyWeather   = data.hourly;
+        var code            = data.current_weather.weathercode;
+        var daily           = data.daily;
+        var maxTemp         = data.daily.temperature_2m_max;
+        var minTemp         = data.daily.temperature_2m_min;
+        var weatherCode     = data.daily.weathercode;
+        var seven           = document.querySelector('weather-seven-days');
 
         //loop through the JSON
         for (let i = 0; i < daily.time.length; i++) 
@@ -118,21 +117,21 @@ let weather = {
         var wspeed = currentWeather.windspeed;
 
         //Set current weather in main weather container
-        document.querySelector(".city").innerText = "Weather in " + searchBarInput.value; // <<-- Location in heading
-        document.querySelector(".temp").innerText = parseInt(data.current_weather.temperature) + "°C"; // <<-- Temperature
-        document.querySelector(".windspeed").innerText = "Wind: " + parseInt(wspeed) + "km/h"; // <<-- Wind Speed
-        document.querySelector(".humidity").innerText = "Humidity: " + parseInt(hourlyWeather.relativehumidity_2m[0]) + "%"; // <<-- Humidity
+        document.querySelector(".city").innerText       = "Weather in " + searchBarInput.value; // <<-- Location in heading
+        document.querySelector(".temp").innerText       = parseInt(data.current_weather.temperature) + "°C"; // <<-- Temperature
+        document.querySelector(".windspeed").innerText  = "Wind: " + parseInt(wspeed) + "km/h"; // <<-- Wind Speed
+        document.querySelector(".humidity").innerText   = "Humidity: " + parseInt(hourlyWeather.relativehumidity_2m[0]) + "%"; // <<-- Humidity
+        document.querySelector(".desc").innerText       = wmoCodes[code]; // <<-- Weather description based on weathercode
+        document.querySelector(".weatherIcon").src      = "/Icons/"+codeDescription+".svg"; // <<-- Weather icons
+
         document.querySelector(".weather").classList.remove("loading"); // <<-- Remove loading from class list to show full weather card
-        document.querySelector(".desc").innerText = wmoCodes[code]; // <<-- Weather description based on weathercode
-        document.querySelector(".weatherIcon").src = "/Icons/"+codeDescription+".svg"; // <<-- Weather icons
 
         // Background image from unsplash based on location -- not very great though
         document.body.style.backgroundImage = "url('https://source.unsplash.com/random/1600x900/?" + searchBarInput.value + "')";
 
-
         //Store data for hourly forecast
-        var hourTemp = hourlyWeather.temperature_2m;
-        var hourHum = hourlyWeather.relativehumidity_2m;
+        var hourTemp    = hourlyWeather.temperature_2m;
+        var hourHum     = hourlyWeather.relativehumidity_2m;
         //Add hourly forecast
         for (let i = 0; i < 24; i++) {
 
@@ -153,25 +152,21 @@ let weather = {
             humidityForHour.classList.add('humidity-for-hour');
 
             //change date to show only hours 0-23
-            var dateAux = new Date(hours);
-            var hourTime = dateAux.toString().split(' ')[4]; // <<-- Show time as HH:MM:SS
-            var hourOnly = hourTime.toString().split(':')[0];// <<-- Show time as HH
-            var minOnly = hourTime.toString().split(':')[1]; // <<-- Show time as MM
-
-            var hourAndMin = `${hourOnly}:${minOnly}`; // <<-- Concatenate to show time as HH:MM
+            var dateAux     = new Date(hours);
+            var hourTime    = dateAux.toString().split(' ')[4]; // <<-- Show time as HH:MM:SS
+            var hourOnly    = hourTime.toString().split(':')[0];// <<-- Show time as HH
+            var minOnly     = hourTime.toString().split(':')[1]; // <<-- Show time as MM
+            var hourAndMin  = `${hourOnly}:${minOnly}`; // <<-- Concatenate to show time as HH:MM
 
             //Populate tags
-            hourHeading.innerHTML = hourAndMin;
-            tempForHour.innerHTML = `${parseInt(hourTemp[i])}°C`;
-            humidityForHour.innerHTML = `${hourHum[i]}%`;
-
-            console.log(tempForHour, humidityForHour);
+            hourHeading.innerHTML       = hourAndMin;
+            tempForHour.innerHTML       = `${parseInt(hourTemp[i])}°C`;
+            humidityForHour.innerHTML   = `${hourHum[i]}%`;
 
             //append
             hourCard.appendChild(hourHeading);
             hourCard.appendChild(tempForHour);
             hourCard.appendChild(humidityForHour);
-
 
             const mainHourlyContainer = document.querySelector('.hourly-container');
             mainHourlyContainer.appendChild(hourCard);
@@ -210,15 +205,15 @@ let weather = {
         const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiY3Jpc3RpYW5tYWNvdmVpIiwiYSI6ImNsZzUwNzFicDAwMzYzZHByeHd2cXp4cjEifQ.TF3o7k2iti3xgiQNOcQVFA';
         const geocodeURL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${cityName}.json?access_token=${MAPBOX_ACCESS_TOKEN}`;
         // await fetch url and response in json
-        var response = await fetch(geocodeURL);
-        var data = await response.json();
+        var response    = await fetch(geocodeURL);
+        var data        = await response.json();
 
         //store found data
         var coordinates = data.features[0].center;
 
         //convert to 2 individual variables: lat & long
-        var long = coordinates[0];
-        var lat = coordinates[1];
+        var long    = coordinates[0];
+        var lat     = coordinates[1];
 
         // call fetchVreme for stored values above
         this.fetchVreme(lat,long);
@@ -262,9 +257,7 @@ navigator.geolocation.getCurrentPosition((position) => {
 
         //verify that it ACTUALLY STORES THE DAMN LOC // it does
         var passedLoc = document.getElementById('searchbar').value = location;
-        
         weather.getCoordForCity(location);
-
       })
       .catch(error => {
         console.log(error.message);
@@ -277,16 +270,15 @@ navigator.geolocation.getCurrentPosition((position) => {
   });
 
 //Date and Time
-const datetimeCont = document.getElementById('datetime-container');
-const dateCont = document.getElementById('date');
-const timeCont = document.getElementById('time');
+const datetimeCont  = document.getElementById('datetime-container');
+const dateCont      = document.getElementById('date');
+const timeCont      = document.getElementById('time');
 //Time and date IRL
 setInterval(() => {
     
-    const now = new Date();
-
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
+    const now       = new Date();
+    const hours     = now.getHours();
+    const minutes   = now.getMinutes();
 
     //Get minutes and show a 0 if minutes less than 10 // 9:05 instead of 9:5
     const time = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
