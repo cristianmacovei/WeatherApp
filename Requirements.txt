@@ -11,3 +11,6 @@
 • Weather Card arata datele pentru locația actuala inițial ->>> location request
 • Aplicația ar trebui să permită utilizatorului să facă forecast pe mai multe zile/ore.
 • Codul trebuie să fie încărcat si accesibil pe un GitHub/Bitbucket, pentru a îl putea clona și rula.
+
+Localhost with MAMP created, http://localhost:8888/index.html, not displaying properly
+
